@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from typing import Any
 
 from custom_components.home_ledger.entity import HomeLedgerEntity
+from custom_components.home_ledger.entity.base import localize_currency_unit
 from homeassistant.components.sensor import SensorEntity, SensorEntityDescription
 from homeassistant.helpers.typing import StateType
 
@@ -19,6 +20,15 @@ class HomeLedgerSensorEntityDescription(SensorEntityDescription):
 
 class HomeLedgerSensor(SensorEntity, HomeLedgerEntity):
     """Sensor backed by one value in the coordinator payload."""
+
+    @property
+    def native_unit_of_measurement(self) -> str | None:
+        """Return the unit, in Home Assistant's configured currency."""
+        hass = getattr(self, "hass", None)
+        return localize_currency_unit(
+            super().native_unit_of_measurement,
+            hass.config.currency if hass is not None else None,
+        )
 
     entity_description: HomeLedgerSensorEntityDescription
 

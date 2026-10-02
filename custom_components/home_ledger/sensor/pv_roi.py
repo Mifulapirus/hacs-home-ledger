@@ -3,12 +3,22 @@
 from typing import Any
 
 from custom_components.home_ledger.entity import HomeLedgerEntity
+from custom_components.home_ledger.entity.base import localize_currency_unit
 from homeassistant.components.sensor import SensorDeviceClass, SensorEntity, SensorEntityDescription, SensorStateClass
 from homeassistant.const import CURRENCY_EURO, EntityCategory
 
 
 class PVROISensor(HomeLedgerEntity, SensorEntity):
     """Sensor that exposes PV ROI metrics from the coordinator."""
+
+    @property
+    def native_unit_of_measurement(self) -> str | None:
+        """Return the unit, in Home Assistant's configured currency."""
+        hass = getattr(self, "hass", None)
+        return localize_currency_unit(
+            super().native_unit_of_measurement,
+            hass.config.currency if hass is not None else None,
+        )
 
     entity_description: PVROISensorEntityDescription
 

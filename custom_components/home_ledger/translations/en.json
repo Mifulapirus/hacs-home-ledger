@@ -22,7 +22,7 @@
           "utility_type": "Utility type",
           "start_date": "Start date",
           "end_date": "End date",
-          "total_cost": "Total cost (EUR)",
+          "total_cost": "Total cost",
           "consumption": "Consumption",
           "bill_id": "Bill ID (optional)"
         },
@@ -153,6 +153,12 @@
       },
       "total_activities": {
         "name": "Total activities"
+      },
+      "total_other_cost": {
+        "name": "Total other charges"
+      },
+      "other_average_monthly_cost": {
+        "name": "Other charges average monthly cost"
       }
     }
   },
@@ -171,7 +177,7 @@
         },
         "utility_type": {
           "name": "Utility type",
-          "description": "Type of utility: electricity, gas, or water."
+          "description": "Type of utility: electricity, gas, water, or other (flat fees with no metered consumption; use 0 for consumption)."
         },
         "start_date": {
           "name": "Start date",
@@ -183,7 +189,7 @@
         },
         "total_cost": {
           "name": "Total cost",
-          "description": "Total cost of the bill in EUR."
+          "description": "Total cost of the bill, in Home Assistant's configured currency."
         },
         "consumption": {
           "name": "Consumption",
@@ -217,7 +223,7 @@
         },
         "total_cost": {
           "name": "Total cost",
-          "description": "New total cost in EUR."
+          "description": "New total cost, in Home Assistant's configured currency."
         },
         "consumption": {
           "name": "Consumption",

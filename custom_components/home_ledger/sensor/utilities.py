@@ -7,7 +7,7 @@ from homeassistant.components.sensor import SensorDeviceClass, SensorStateClass
 from homeassistant.const import CURRENCY_EURO, UnitOfEnergy, UnitOfVolume
 from homeassistant.helpers.typing import StateType
 
-UTILITY_TYPES = ("electricity", "gas", "water")
+UTILITY_TYPES = ("electricity", "gas", "water", "other")
 
 
 def _sum_values(data: Any, keys: tuple[str, ...]) -> StateType:
@@ -59,7 +59,7 @@ COST_DESCRIPTIONS: tuple[HomeLedgerSensorEntityDescription, ...] = (
         suggested_display_precision=2,
         value_fn=lambda data: _sum_values(
             data,
-            ("total_electricity_cost", "total_gas_cost", "total_water_cost"),
+            ("total_electricity_cost", "total_gas_cost", "total_water_cost", "total_other_cost"),
         ),
     ),
 )
@@ -128,7 +128,6 @@ COST_PER_UNIT_DESCRIPTIONS: tuple[HomeLedgerSensorEntityDescription, ...] = (
     HomeLedgerSensorEntityDescription(
         key="electricity_cost_per_unit",
         translation_key="electricity_cost_per_unit",
-        device_class=SensorDeviceClass.MONETARY,
         native_unit_of_measurement=f"{CURRENCY_EURO}/{UnitOfEnergy.KILO_WATT_HOUR}",
         suggested_display_precision=2,
         value_fn=lambda data: _get_attr(data, "electricity_cost_per_unit"),
@@ -137,7 +136,6 @@ COST_PER_UNIT_DESCRIPTIONS: tuple[HomeLedgerSensorEntityDescription, ...] = (
         HomeLedgerSensorEntityDescription(
             key=f"{utility_type}_cost_per_unit",
             translation_key=f"{utility_type}_cost_per_unit",
-            device_class=SensorDeviceClass.MONETARY,
             native_unit_of_measurement=f"{CURRENCY_EURO}/{UnitOfVolume.CUBIC_METERS}",
             suggested_display_precision=2,
             value_fn=lambda data, key=f"{utility_type}_cost_per_unit": _get_attr(data, key),

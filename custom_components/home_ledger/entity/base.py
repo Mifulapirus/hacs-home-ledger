@@ -33,3 +33,16 @@ class HomeLedgerEntity(CoordinatorEntity[HomeLedgerDataUpdateCoordinator]):
             manufacturer="Home Ledger",
             model="Home Ledger",
         )
+
+
+def localize_currency_unit(unit: str | None, currency: str | None) -> str | None:
+    """Replace the hard-coded euro sign with Home Assistant's configured currency.
+
+    Sensor descriptions are module-level constants written in EUR; the real
+    currency is only known at runtime, from hass.config.currency.
+    """
+    from homeassistant.const import CURRENCY_EURO  # noqa: PLC0415
+
+    if unit and currency and CURRENCY_EURO in unit:
+        return unit.replace(CURRENCY_EURO, currency)
+    return unit

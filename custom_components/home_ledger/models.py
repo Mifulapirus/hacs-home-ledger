@@ -13,12 +13,14 @@ class UtilityType(StrEnum):
     ELECTRICITY = "electricity"
     GAS = "gas"
     WATER = "water"
+    OTHER = "other"  # flat fees and charges with no metered consumption
 
 
 UTILITY_UNITS: dict[UtilityType, str] = {
     UtilityType.ELECTRICITY: "kWh",
     UtilityType.GAS: "m\u00b3",
     UtilityType.WATER: "m\u00b3",
+    UtilityType.OTHER: "",
 }
 
 

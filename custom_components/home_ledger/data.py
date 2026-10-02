@@ -69,6 +69,10 @@ class HomeLedgerAggregates:
     total_electricity_days: int
     total_gas_days: int
     total_water_days: int
+    total_other_cost: float = 0.0
+    other_average_monthly_cost: float | None = None
+    other_monthly_costs: dict[str, float] | None = None
+    total_other_days: int = 0
 
 
 @dataclass(frozen=True)
@@ -105,7 +109,8 @@ class HomeLedgerData:
         total_electricity_cost = calculate_total_cost(bills, UtilityType.ELECTRICITY)
         total_gas_cost = calculate_total_cost(bills, UtilityType.GAS)
         total_water_cost = calculate_total_cost(bills, UtilityType.WATER)
-        total_utility_cost = total_electricity_cost + total_gas_cost + total_water_cost
+        total_other_cost = calculate_total_cost(bills, UtilityType.OTHER)
+        total_utility_cost = total_electricity_cost + total_gas_cost + total_water_cost + total_other_cost
 
         total_electricity_consumption = calculate_total_consumption(bills, UtilityType.ELECTRICITY)
         total_gas_consumption = calculate_total_consumption(bills, UtilityType.GAS)
@@ -147,6 +152,10 @@ class HomeLedgerData:
             total_electricity_days=calculate_total_days(bills, UtilityType.ELECTRICITY),
             total_gas_days=calculate_total_days(bills, UtilityType.GAS),
             total_water_days=calculate_total_days(bills, UtilityType.WATER),
+            total_other_cost=total_other_cost,
+            other_average_monthly_cost=calculate_average_monthly_cost(bills, UtilityType.OTHER),
+            other_monthly_costs=calculate_monthly_costs(bills, UtilityType.OTHER) or None,
+            total_other_days=calculate_total_days(bills, UtilityType.OTHER),
         )
 
     def calculate_pv_roi(
