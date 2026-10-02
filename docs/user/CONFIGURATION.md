@@ -8,9 +8,9 @@ Go to **Settings → Devices & services → Home Ledger → Options** to add bil
 
 | Field          | Type    | Required | Description                                          |
 | -------------- | ------- | -------- | ---------------------------------------------------- |
-| `utility_type` | select  | yes      | `electricity`, `gas`, or `water`                     |
+| `utility_type` | select  | yes      | `electricity`, `gas`, `water`, or `other`            |
 | `months`       | integer | yes      | Number of months the bill covers (≥ 1)               |
-| `total_cost`   | float   | yes      | Total cost in EUR (≥ 0)                              |
+| `total_cost`   | float   | yes      | Total cost in Home Assistant's currency (≥ 0)        |
 | `consumption`  | float   | yes      | Total consumption in the unit for that utility (≥ 0) |
 | `bill_id`      | string  | no       | Custom ID. Auto-generated if omitted                 |
 
@@ -25,10 +25,10 @@ Create a new bill.
 | Field             | Type   | Required | Description                                          |
 | ----------------- | ------ | -------- | ---------------------------------------------------- |
 | `config_entry_id` | string | yes      | The config entry ID (from Developer Tools → States)  |
-| `utility_type`    | string | yes      | `electricity`, `gas`, or `water`                     |
+| `utility_type`    | string | yes      | `electricity`, `gas`, `water`, or `other`            |
 | `start_date`      | string | yes      | Start date in ISO format (YYYY-MM-DD)                |
 | `end_date`        | string | yes      | End date in ISO format (YYYY-MM-DD)                  |
-| `total_cost`      | float  | yes      | Total cost in EUR (≥ 0)                              |
+| `total_cost`      | float  | yes      | Total cost in Home Assistant's currency (≥ 0)        |
 | `consumption`     | float  | yes      | Total consumption in the unit for that utility (≥ 0) |
 | `bill_id`         | string | no       | Custom ID. Auto-generated if omitted                 |
 

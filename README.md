@@ -11,7 +11,9 @@ Home Ledger is a Home Assistant custom integration for tracking household utilit
 
 ## Features
 
-- **Utility Bill Tracking**: Track electricity, gas, and water bills with full CRUD operations
+- **Utility Bill Tracking**: Track electricity, gas, and water bills, plus flat charges with no metered consumption
+  (`other`), with full CRUD operations
+- **Any Currency**: Cost sensors use the currency configured in Home Assistant
 - **Persistent Storage**: All data is stored locally using Home Assistant's storage system
 - **Smart Calculations**: Automatic calculation of totals, averages, and cost per unit
 - **Service Actions**: Add, update, delete, and list bills via service calls
@@ -72,9 +74,9 @@ data:
 | Parameter         | Required | Description                                     |
 | ----------------- | -------- | ----------------------------------------------- |
 | `config_entry_id` | Yes      | The Home Ledger config entry ID                 |
-| `utility_type`    | Yes      | `electricity`, `gas`, or `water`                |
+| `utility_type`    | Yes      | `electricity`, `gas`, `water`, or `other`       |
 | `months`          | Yes      | Number of months covered (1, 2, 3, 6, 12, etc.) |
-| `total_cost`      | Yes      | Total cost in EUR                               |
+| `total_cost`      | Yes      | Total cost, in Home Assistant's currency        |
 | `consumption`     | Yes      | Total consumption value                         |
 | `bill_id`         | No       | Custom ID (auto-generated if omitted)           |
 
@@ -109,12 +111,18 @@ data:
 
 ### Cost Sensors
 
-| Sensor                 | Unit | Description                  |
-| ---------------------- | ---- | ---------------------------- |
-| Total electricity cost | €    | Sum of all electricity bills |
-| Total gas cost         | €    | Sum of all gas bills         |
-| Total water cost       | €    | Sum of all water bills       |
-| Total utility cost     | €    | Sum of all utility costs     |
+"currency" is the currency set in Home Assistant under **Settings → System → General**, so a household billed in
+USD sees USD. `other` is for flat charges with no metered consumption — waste collection, drainage, account and
+late-payment fees — so they count toward the total without distorting water's or gas's cost per unit. Record them
+with `consumption: 0`; `other` has no consumption or cost-per-unit sensors.
+
+| Sensor                 | Unit     | Description                                |
+| ---------------------- | -------- | ------------------------------------------ |
+| Total electricity cost | currency | Sum of all electricity bills               |
+| Total gas cost         | currency | Sum of all gas bills                       |
+| Total water cost       | currency | Sum of all water bills                     |
+| Total other charges    | currency | Sum of all `other` bills                   |
+| Total utility cost     | currency | Sum of all utility costs, `other` included |
 
 ### Consumption Sensors
 
@@ -126,22 +134,25 @@ data:
 
 ### Average Monthly Sensors
 
-| Sensor                                  | Unit | Description                      |
-| --------------------------------------- | ---- | -------------------------------- |
-| Electricity average monthly cost        | €    | Total cost / total months        |
-| Gas average monthly cost                | €    | Total cost / total months        |
-| Water average monthly cost              | €    | Total cost / total months        |
-| Electricity average monthly consumption | kWh  | Total consumption / total months |
-| Gas average monthly consumption         | m³   | Total consumption / total months |
-| Water average monthly consumption       | m³   | Total consumption / total months |
+| Sensor                                  | Unit     | Description                      |
+| --------------------------------------- | -------- | -------------------------------- |
+| Electricity average monthly cost        | currency | Total cost / total months        |
+| Gas average monthly cost                | currency | Total cost / total months        |
+| Water average monthly cost              | currency | Total cost / total months        |
+| Other charges average monthly cost      | currency | Total cost / total months        |
+| Electricity average monthly consumption | kWh      | Total consumption / total months |
+| Gas average monthly consumption         | m³       | Total consumption / total months |
+| Water average monthly consumption       | m³       | Total consumption / total months |
 
 ### Cost per Unit Sensors
 
-| Sensor                    | Unit  | Description                    |
-| ------------------------- | ----- | ------------------------------ |
-| Electricity cost per unit | €/kWh | Total cost / total consumption |
-| Gas cost per unit         | €/m³  | Total cost / total consumption |
-| Water cost per unit       | €/m³  | Total cost / total consumption |
+A price per unit is not an amount of money, so these sensors carry no `monetary` device class.
+
+| Sensor                    | Unit         | Description                    |
+| ------------------------- | ------------ | ------------------------------ |
+| Electricity cost per unit | currency/kWh | Total cost / total consumption |
+| Gas cost per unit         | currency/m³  | Total cost / total consumption |
+| Water cost per unit       | currency/m³  | Total cost / total consumption |
 
 ## Dashboard Example
 

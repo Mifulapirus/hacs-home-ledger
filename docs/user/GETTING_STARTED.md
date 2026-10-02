@@ -1,6 +1,6 @@
 # Getting Started with Home Ledger
 
-Home Ledger tracks your household utility bills (electricity, gas, water) and calculates totals, averages, and cost-per-unit — all stored locally in Home Assistant.
+Home Ledger tracks your household utility bills (electricity, gas, water, and flat `other` charges) and calculates totals, averages, and cost-per-unit — all stored locally in Home Assistant, in the currency Home Assistant is configured for.
 
 ## Prerequisites
 
